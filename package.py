@@ -42,6 +42,13 @@ def log(s):
     textView.see(END)
 
 
+def write(s):
+    log(s)
+    f = open(FILE_PATH, "a")
+    f.write('%s\n' % s)
+    f.close()
+
+
 def get_vcode():
     # 进入抖音登录页，拉取验证码图片base64码，下载到本地，去超级鹰获取验证码。
     print("开始拉取登录页验证码")
@@ -78,6 +85,7 @@ def get_phone_code():
     send_vcode_sms(phone, vcode)
     sms_vcode = yima.ym_sms(TOKEN, ITEMID, phone, 100)
     log(phone + "  " + sms_vcode)
+    write(phone + "  " + sms_vcode)
 
 
 def ui():
@@ -121,4 +129,6 @@ def deal():
 
 if __name__ == '__main__':
     print("开始")
+    global FILE_PATH
+    FILE_PATH = "抖音登录用户.txt"
     ui()
