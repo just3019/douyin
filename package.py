@@ -77,6 +77,9 @@ def send_vcode_sms(phone, vcode):
     response = requests.get('https://sso.douyin.com/send_activation_code/', headers=headers, params=params,
                             cookies=cookies)
     print(response.text)
+    result = json.loads(response.text)
+    if result["error_code"] != 0:
+        raise RuntimeError("验证码解析错误")
 
 
 def get_phone_code():
@@ -84,7 +87,6 @@ def get_phone_code():
     vcode = get_vcode()
     send_vcode_sms(phone, vcode)
     sms_vcode = yima.ym_sms(TOKEN, ITEMID, phone, 100)
-    log(phone + "  " + sms_vcode)
     write(phone + "  " + sms_vcode)
 
 
